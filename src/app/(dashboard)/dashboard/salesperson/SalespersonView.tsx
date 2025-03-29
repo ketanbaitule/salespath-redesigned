@@ -2,13 +2,7 @@
 
 import { DataViewer } from "@/components/data-viewer";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Salesperson } from "@/types/salesperson";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
