@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import SalespersonTasks from "./_salespersonTasks/SalespersonTasks";
 import SalespersonLeads from "./_salespersonLeads/SalespersonLeads";
 import SalespersonLocation from "./_salespersonLocation/SalespersonLocation";
+import LocationMapView from "./_salespersonMapView/LocationMapView";
 
 export const metadata: Metadata = {
   title: "Salesperson | Salespath",
@@ -14,9 +15,14 @@ export const metadata: Metadata = {
 
 export default async function SalespersonPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ salespersonId: string }>;
+  searchParams: Promise<
+    { tripStartId: string; tripEndId: string; page: string } | undefined | null
+  >;
 }) {
+  const searchParam = await searchParams;
   const salespersonId = (await params).salespersonId;
   const client = await createClient();
   const { data } = await client
@@ -41,7 +47,10 @@ export default async function SalespersonPage({
       <SalespersonInfo salesperson={salesperson} />
       <div className="grid grid-cols-1 py-10 gap-5">
         <div className="px-5">
-          <Tabs defaultValue="tasks" className="w-full">
+          <Tabs
+            defaultValue={searchParam?.page ? searchParam.page : "tasks"}
+            className="w-full"
+          >
             <TabsList className="grid w-full max-w-md grid-cols-4">
               <TabsTrigger value="tasks">Tasks</TabsTrigger>
               <TabsTrigger value="leads">Leads</TabsTrigger>
@@ -56,6 +65,12 @@ export default async function SalespersonPage({
             </TabsContent>
             <TabsContent value="trips" className="mt-6">
               <SalespersonLocation salesperson_id={salesperson.id} />
+            </TabsContent>
+            <TabsContent value="location" className="mt-6">
+              <LocationMapView
+                salesperson_id={salesperson.id}
+                searchParams={searchParam}
+              />
             </TabsContent>
           </Tabs>
         </div>

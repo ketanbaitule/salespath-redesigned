@@ -38,10 +38,9 @@ export default function TripTable({
               query: {
                 tripStartId: row.original.trip.startId,
                 tripEndId: row.original.trip.endId,
-                page: "tripHistory",
+                page: "location",
               },
             }}
-            target="_blank"
           >
             View Trip
           </Link>
