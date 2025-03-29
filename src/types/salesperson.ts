@@ -23,3 +23,13 @@ export const addSalespersonTaskSchema = z.object({
   lat: z.coerce.number(),
   long: z.coerce.number(),
 });
+
+export type SalespersonLeads = {
+  id: number;
+  name: string;
+  number: number;
+  email: string;
+  organization: string;
+  notes: string;
+  tasks: SalespersonTask;
+};

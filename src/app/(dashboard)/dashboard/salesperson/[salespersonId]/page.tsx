@@ -4,9 +4,9 @@ import { Salesperson } from "@/types/salesperson";
 import SalespersonInfo from "./SalespersonInfo";
 import { Distance } from "@mmit/latlong";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SalespersonLeads from "./SalespersonLeads";
 import { Toaster } from "@/components/ui/sonner";
 import SalespersonTasks from "./_salespersonTasks/SalespersonTasks";
+import SalespersonLeads from "./_salespersonLeads/SalespersonLeads";
 
 export const metadata: Metadata = {
   title: "Salesperson | Salespath",
