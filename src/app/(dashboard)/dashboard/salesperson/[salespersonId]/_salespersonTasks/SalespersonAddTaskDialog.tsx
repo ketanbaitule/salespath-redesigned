@@ -26,7 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { SubmitButton } from "@/components/submit-button";
-import { submitAddTaskToSalesperson } from "./salespersonActions";
+import { submitAddTaskToSalesperson } from "../salespersonActions";
 
 export default function AddTaskDialog({
   salespersonId,

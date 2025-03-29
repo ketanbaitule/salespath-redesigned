@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,12 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SalespersonTask } from "@/types/salesperson";
 import { createClient } from "@/utils/supabase/server";
-import { ColumnDef } from "@tanstack/react-table";
 import SalesPersonTasksTable from "./SalespersonTasksTable";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import AddTaskDialog from "./SalespersonAddTaskDialog";
 
 export default async function SalespersonTasks({
