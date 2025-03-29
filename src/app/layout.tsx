@@ -11,8 +11,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Kanchan Deep Jyot",
-  description: "Kanchan Deep Jyot Web App",
+  title: "Salespath",
+  description: "Salespath",
 };
 
 const geistSans = Geist({
@@ -37,7 +37,7 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col items-center">
               <Navbar />
-              <div className="flex flex-1 p-5 justify-self-stretch self-stretch">
+              <div className="flex flex-1 justify-self-stretch self-stretch">
                 {children}
               </div>
               <Footer />
