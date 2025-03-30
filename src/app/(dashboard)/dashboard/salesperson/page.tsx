@@ -2,6 +2,8 @@ import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import SalespersonView from "./SalespersonView";
 import { Salesperson } from "@/types/salesperson";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Salesperson | Salespath",
@@ -24,7 +26,12 @@ export default async function SalespersonPage() {
   });
   return (
     <div className="px-5 py-3 w-full">
-      <h1 className="text-3xl tracking-tight">Sales Team</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl tracking-tight">Sales Team</h1>
+        <Button asChild>
+          <Link href="/dashboard/settings">Add Salesperson</Link>
+        </Button>
+      </div>
       <div>
         <SalespersonView salesperson={salespersons} />
       </div>
