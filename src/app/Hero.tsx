@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
+import HeroImage from "@/assets/hero.png";
 
 export default function Hero() {
   return (
@@ -35,11 +37,16 @@ export default function Hero() {
           </div>
           <div className="relative hidden lg:block">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5 rounded-2xl"></div>
-            <img
-              src="/hero.png?height=600&width=500"
+            <Image
+              src={HeroImage}
               alt="SalesPath Dashboard"
               className="relative rounded-2xl shadow-xl"
             />
+            {/* <img
+              src="/hero.png?height=600&width=500"
+              alt="SalesPath Dashboard"
+              className="relative rounded-2xl shadow-xl"
+            /> */}
           </div>
         </div>
       </div>
