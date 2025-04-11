@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -66,6 +65,7 @@ export default function AddTaskDialog({
 
   async function onSubmit(values: z.infer<typeof addSalespersonTaskSchema>) {
     try {
+      console.log("On Submit Called");
       await submitAddTaskToSalesperson(values, salespersonId);
       form.reset({
         goal: "",
@@ -194,9 +194,7 @@ export default function AddTaskDialog({
                 </div>
               </div>
               <DialogFooter>
-                <DialogClose asChild>
-                  <SubmitButton>Add Task</SubmitButton>
-                </DialogClose>
+                <SubmitButton>Add Task</SubmitButton>
               </DialogFooter>
             </form>
           </Form>
