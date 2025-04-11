@@ -23,6 +23,35 @@ export async function updateAgencyDetails(
   return res.error === null;
 }
 
+export async function createNewSalesPerson(
+  email: string,
+  password: string,
+  name: string
+) {
+  const client = await createClient(true);
+  const { data, error } = await client.auth.admin.createUser({
+    email: email,
+    password: password,
+    user_metadata: {
+      name: name,
+    },
+  });
+
+  if (error) {
+    console.error("Error creating user:", error);
+    if (error.status === 422) {
+      return {
+        error: "User already exists",
+      };
+    }
+    return null;
+  }
+
+  await addSalespersonSetting(data.user?.id as string, name);
+
+  return error === null;
+}
+
 export async function addSalespersonSetting(uuid: string, name: string) {
   const client = await createClient();
   const res = await client.from("salesperson").insert([

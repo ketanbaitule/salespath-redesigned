@@ -33,47 +33,48 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import {
   addSalespersonSetting,
+  createNewSalesPerson,
   deleteSalespersonSetting,
 } from "./settingAction";
 
-// Mock salespeople data - in a real app, this would come from a database
-const initialSalespeople = [
-  {
-    id: "SP-001-JD",
-    name: "John Doe",
-    avatar: "/placeholder.svg?height=32&width=32",
-    initials: "JD",
-    email: "john.doe@example.com",
-  },
-  {
-    id: "SP-002-SS",
-    name: "Sarah Smith",
-    avatar: "/placeholder.svg?height=32&width=32",
-    initials: "SS",
-    email: "sarah.smith@example.com",
-  },
-  {
-    id: "SP-003-MJ",
-    name: "Mike Johnson",
-    avatar: "/placeholder.svg?height=32&width=32",
-    initials: "MJ",
-    email: "mike.johnson@example.com",
-  },
-  {
-    id: "SP-004-LB",
-    name: "Lisa Brown",
-    avatar: "/placeholder.svg?height=32&width=32",
-    initials: "LB",
-    email: "lisa.brown@example.com",
-  },
-  {
-    id: "SP-005-DW",
-    name: "David Wilson",
-    avatar: "/placeholder.svg?height=32&width=32",
-    initials: "DW",
-    email: "david.wilson@example.com",
-  },
-];
+// // Mock salespeople data - in a real app, this would come from a database
+// const initialSalespeople = [
+//   {
+//     id: "SP-001-JD",
+//     name: "John Doe",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//     initials: "JD",
+//     email: "john.doe@example.com",
+//   },
+//   {
+//     id: "SP-002-SS",
+//     name: "Sarah Smith",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//     initials: "SS",
+//     email: "sarah.smith@example.com",
+//   },
+//   {
+//     id: "SP-003-MJ",
+//     name: "Mike Johnson",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//     initials: "MJ",
+//     email: "mike.johnson@example.com",
+//   },
+//   {
+//     id: "SP-004-LB",
+//     name: "Lisa Brown",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//     initials: "LB",
+//     email: "lisa.brown@example.com",
+//   },
+//   {
+//     id: "SP-005-DW",
+//     name: "David Wilson",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//     initials: "DW",
+//     email: "david.wilson@example.com",
+//   },
+// ];
 
 export function SalespersonSettings({
   salespeople,
@@ -89,30 +90,58 @@ export function SalespersonSettings({
   const [newSalespersonId, setNewSalespersonId] = useState("");
   const [newSalespersonName, setNewSalespersonName] = useState("");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [newSalespersonEmail, setNewSalespersonEmail] = useState("");
 
   async function addSalesperson(formData: FormData) {
     // In a real app, this would be a server action that adds to the database
     const uuid = formData.get("uuid") as string;
+    const email = formData.get("newsalespersonemail") as string;
 
-    if (!uuid) {
+    if (!uuid && !email) {
       toast.error("Error", {
-        description: "Salesperson ID is required",
+        description: "Salesperson ID or New Salesperson Email is required",
       });
       return;
     }
 
-    const res = await addSalespersonSetting(uuid, newSalespersonName);
+    if (uuid) {
+      const res = await addSalespersonSetting(uuid, newSalespersonName);
+      if (res) {
+        // Show success toast
+        toast.success("Salesperson added", {
+          description: `Salesperson with ID ${uuid} has been added successfully.`,
+        });
+      } else {
+        // Show error toast
+        toast.error("Error", {
+          description: `An error occurred while adding the salesperson with ID ${uuid}.`,
+        });
+      }
+    } else if (email) {
+      const res = await createNewSalesPerson(
+        email,
+        "Password",
+        newSalespersonName
+      );
 
-    if (res) {
-      // Show success toast
-      toast.success("Salesperson added", {
-        description: `Salesperson with ID ${uuid} has been added successfully.`,
-      });
-    } else {
-      // Show error toast
-      toast.error("Error", {
-        description: `An error occurred while adding the salesperson with ID ${uuid}.`,
-      });
+      if (res) {
+        if (typeof res === "object" && "error" in res) {
+          toast.error("Error", {
+            description: `An error occurred while adding the salesperson with email. ${res.error}`,
+          });
+          return;
+        } else {
+          // Show success toast
+          toast.success("Salesperson added", {
+            description: `Salesperson Added. Temperorary password is "Password".`,
+          });
+        }
+      } else {
+        // Show error toast
+        toast.error("Error", {
+          description: `An error occurred while adding the salesperson with email.`,
+        });
+      }
     }
 
     // Close dialog and reset form
@@ -182,7 +211,7 @@ export function SalespersonSettings({
               <DialogHeader>
                 <DialogTitle>Add Salesperson</DialogTitle>
                 <DialogDescription>
-                  Enter the salesperson's unique ID or scan their QR code.
+                  Enter the salesperson's unique ID.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -194,8 +223,7 @@ export function SalespersonSettings({
                       name="uuid"
                       value={newSalespersonId}
                       onChange={(e) => setNewSalespersonId(e.target.value)}
-                      placeholder="Enter ID"
-                      required
+                      placeholder="Enter ID for existing salesperson"
                     />
                     <Button
                       type="button"
@@ -212,8 +240,37 @@ export function SalespersonSettings({
                     </Button>
                   </div>
                 </div>
+
+                <div className="flex items-center justify-center my-2">
+                  <div className="border-t flex-grow mr-3"></div>
+                  <span className="text-sm text-muted-foreground">OR</span>
+                  <div className="border-t flex-grow ml-3"></div>
+                </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="name">Salesperson Name</Label>
+                  <Label htmlFor="newsalespersonemail">Salesperson Email</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="newsalespersonemail"
+                      name="newsalespersonemail"
+                      type="email"
+                      value={newSalespersonEmail}
+                      onChange={(e) => setNewSalespersonEmail(e.target.value)}
+                      placeholder="Enter Email for new registration"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="name"
+                    className="after:content-['*'] after:text-red-500 after:ml-0.5"
+                  >
+                    Salesperson Name{" "}
+                    <span className="text-sm text-muted-foreground">
+                      (required)
+                    </span>
+                  </Label>
                   <div className="flex gap-2">
                     <Input
                       id="name"
