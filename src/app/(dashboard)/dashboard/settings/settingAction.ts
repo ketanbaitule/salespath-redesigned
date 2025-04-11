@@ -35,6 +35,7 @@ export async function createNewSalesPerson(
     user_metadata: {
       name: name,
     },
+    email_confirm: true,
   });
 
   if (error) {
