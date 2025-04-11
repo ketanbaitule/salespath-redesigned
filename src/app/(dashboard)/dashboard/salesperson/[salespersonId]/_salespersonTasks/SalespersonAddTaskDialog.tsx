@@ -27,6 +27,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { SubmitButton } from "@/components/submit-button";
 import { submitAddTaskToSalesperson } from "../salespersonActions";
+import "leaflet/dist/leaflet.css";
+
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from "react-leaflet";
+import L from "leaflet";
+
+// Create a dedicated component for map events
+function MapClickHandler({ form }: { form: any }) {
+  useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      form.setValue("lat", lat);
+      form.setValue("long", lng);
+    },
+  });
+  return null;
+}
 
 export default function AddTaskDialog({
   salespersonId,
@@ -94,6 +116,40 @@ export default function AddTaskDialog({
                 )}
               />
 
+              <div className="overflow-hidden rounded-md border bg-secondary">
+                <div className="h-64 w-full">
+                  <MapContainer
+                    center={[21.0514, 79.0601]}
+                    zoom={80}
+                    className="h-64 w-full relative"
+                  >
+                    <TileLayer
+                      url="https://salespath-admin.vercel.app"
+                      attribution="Made By SalesPath"
+                    />
+                    <MapClickHandler form={form} />
+                    {form.watch("lat") && form.watch("long") && (
+                      <Marker
+                        position={[form.watch("lat"), form.watch("long")]}
+                        icon={L.divIcon({
+                          className: "custom-marker",
+                          html: `<div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background-color: #ff5722; border-radius: 50%; color: white;">
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 2c3.866 0 7 3.134 7 7 0 5.25-7 13-7 13S5 14.25 5 9c0-3.866 3.134-7 7-7z" />
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 11a2 2 0 100-4 2 2 0 000 4z" />
+                               </svg>
+                             </div>`,
+                        })}
+                      >
+                        <Popup>
+                          Latitude: {form.watch("lat")}, Longitude:{" "}
+                          {form.watch("long")}
+                        </Popup>
+                      </Marker>
+                    )}
+                  </MapContainer>
+                </div>
+              </div>
               <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6">
                   <FormField
