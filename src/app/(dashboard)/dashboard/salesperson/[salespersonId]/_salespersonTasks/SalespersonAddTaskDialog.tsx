@@ -124,7 +124,7 @@ export default function AddTaskDialog({
                     className="h-64 w-full relative"
                   >
                     <TileLayer
-                      url="https://salespath-admin.vercel.app"
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution="Made By SalesPath"
                     />
                     <MapClickHandler form={form} />
