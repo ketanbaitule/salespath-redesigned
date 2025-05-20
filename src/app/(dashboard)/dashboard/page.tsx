@@ -14,11 +14,19 @@ export const metadata: Metadata = {
 export default async function Dashboard() {
   const client = await createClient();
 
+  const agency_id = (await client.auth.getUser()).data.user?.id;
   const salesperson = await client
     .from("salesperson")
-    .select("*", { count: "exact" });
+    .select("*", { count: "exact" })
+    .eq("agency_id", agency_id)
+    .order("created_at", { ascending: false });
 
-  const goals = await client.from("goals").select("*", { count: "exact" });
+  const goals = await client
+    .from("goals")
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false });
+
+  // console.log("goals", goals);
 
   const leads = await client.from("leads").select("*", { count: "exact" });
 
@@ -36,7 +44,11 @@ export default async function Dashboard() {
           <div className="flex justify-between">
             <h2 className="text-2xl">All Goals</h2>
             <Button variant="outline" asChild>
-              <Link href="/dashboard/salesperson">
+              <Link
+                href="/dashboard/export?exportType=csv&exportTable=goals"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -47,7 +59,11 @@ export default async function Dashboard() {
           <div className="flex justify-between">
             <h2 className="text-2xl">All Leads</h2>
             <Button variant="outline" asChild>
-              <Link href="/dashboard/salesperson">
+              <Link
+                href="/dashboard/export?exportType=csv&exportTable=leads"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
