@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
         ...lead,
         salesperson_name: salespersonData?.name,
         salesperson_email: salespersonData?.email,
-        salesperson_phone: salespersonData?.phone,
+        salesperson_phone: salespersonData?.phone_number,
         salesperson_id: salespersonData?.id,
       };
     });
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
         ...goal,
         salesperson_name: salespersonData?.name,
         salesperson_email: salespersonData?.email,
-        salesperson_phone: salespersonData?.phone,
+        salesperson_phone: salespersonData?.phone_number,
         salesperson_id: salespersonData?.id,
       };
     });
