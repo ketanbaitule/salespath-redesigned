@@ -43,7 +43,7 @@ export default async function SalespersonPage({
   };
 
   return (
-    <div className="px-10 py-5 w-full">
+    <div className="px-0 md:px-10 py-5 w-full">
       <SalespersonInfo salesperson={salesperson} />
       <div className="grid grid-cols-1 py-10 gap-5">
         <div className="px-5">

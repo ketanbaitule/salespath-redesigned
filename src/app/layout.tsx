@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -30,19 +31,21 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col items-center">
-              <Navbar />
-              <div className="flex flex-1 justify-self-stretch self-stretch">
-                {children}
+          <SidebarProvider className="h-full w-full">
+            <main className="min-h-screen flex flex-col items-center h-full w-full">
+              <div className="flex-1 w-full flex flex-col items-center">
+                <Navbar />
+                <div className="flex flex-1 justify-self-stretch self-stretch">
+                  {children}
+                </div>
+                <Footer />
               </div>
-              <Footer />
-            </div>
-          </main>
+            </main>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>

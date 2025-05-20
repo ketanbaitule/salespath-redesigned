@@ -38,16 +38,16 @@ export default function SalespersonInfo({
       </div>
       <div className="flex gap-2">
         <Button variant="outline" asChild>
-<Link href={`tel:${salesperson.phone}`}>
-          <Phone className="mr-2 h-4 w-4" />
-          Call
-</Link>
+          <Link href={`tel:${salesperson.phone}`}>
+            <Phone className="mr-2 h-4 w-4" />
+            Call
+          </Link>
         </Button>
         <Button asChild>
-<Link href={`smsto:${salesperson.phone}:Salespath`}>
-          <MessageSquare className="mr-2 h-4 w-4" />
-          Message
-</Link>
+          <Link href={`smsto:${salesperson.phone}`}>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Message
+          </Link>
         </Button>
       </div>
     </div>
