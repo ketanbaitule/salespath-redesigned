@@ -26,7 +26,8 @@ export async function updateAgencyDetails(
 export async function createNewSalesPerson(
   email: string,
   password: string,
-  name: string
+  name: string,
+  phone_number: string
 ) {
   const client = await createClient(true);
   const { data, error } = await client.auth.admin.createUser({
@@ -48,17 +49,30 @@ export async function createNewSalesPerson(
     return null;
   }
 
-  await addSalespersonSetting(data.user?.id as string, name);
+  await addSalespersonSetting(
+    data.user?.id as string,
+    name,
+    email,
+    phone_number
+  );
 
   return error === null;
 }
 
-export async function addSalespersonSetting(uuid: string, name: string) {
+export async function addSalespersonSetting(
+  uuid: string,
+  name: string,
+  email: string,
+  phone_number: string
+) {
   const client = await createClient();
   const res = await client.from("salesperson").insert([
     {
       salesperson_id: uuid,
       name: name,
+      phone_number: parseInt(phone_number),
+      email: email,
+      agency_id: (await client.auth.getUser()).data.user?.id,
     },
   ]);
 

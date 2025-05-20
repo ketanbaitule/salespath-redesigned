@@ -89,6 +89,7 @@ export function SalespersonSettings({
   const [isScanning, setIsScanning] = useState(false);
   const [newSalespersonId, setNewSalespersonId] = useState("");
   const [newSalespersonName, setNewSalespersonName] = useState("");
+  const [newSalespersonPhone, setNewSalespersonPhone] = useState("");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [newSalespersonEmail, setNewSalespersonEmail] = useState("");
 
@@ -105,7 +106,12 @@ export function SalespersonSettings({
     }
 
     if (uuid) {
-      const res = await addSalespersonSetting(uuid, newSalespersonName);
+      const res = await addSalespersonSetting(
+        uuid,
+        newSalespersonName,
+        email,
+        newSalespersonPhone
+      );
       if (res) {
         // Show success toast
         toast.success("Salesperson added", {
@@ -121,7 +127,8 @@ export function SalespersonSettings({
       const res = await createNewSalesPerson(
         email,
         "Password",
-        newSalespersonName
+        newSalespersonName,
+        newSalespersonPhone
       );
 
       if (res) {
@@ -248,7 +255,15 @@ export function SalespersonSettings({
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="newsalespersonemail">Salesperson Email</Label>
+                  <Label
+                    htmlFor="newsalespersonemail"
+                    className="after:content-['*'] after:text-red-500 after:ml-0.5"
+                  >
+                    Salesperson Email{" "}
+                    <span className="text-sm text-muted-foreground">
+                      (required)
+                    </span>
+                  </Label>
                   <div className="flex gap-2">
                     <Input
                       id="newsalespersonemail"
@@ -278,6 +293,27 @@ export function SalespersonSettings({
                       value={newSalespersonName}
                       onChange={(e) => setNewSalespersonName(e.target.value)}
                       placeholder="Enter Name"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="name"
+                    className="after:content-['*'] after:text-red-500 after:ml-0.5"
+                  >
+                    Salesperson Phone Number{" "}
+                    <span className="text-sm text-muted-foreground">
+                      (required)
+                    </span>
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="name"
+                      name="name"
+                      value={newSalespersonPhone}
+                      onChange={(e) => setNewSalespersonPhone(e.target.value)}
+                      placeholder="Enter Phone Number"
                       required
                     />
                   </div>
